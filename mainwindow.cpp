@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     on_sb_numDice_valueChanged(ui->sb_numDice->value());
+    selected.setUnderline(true);
+    normal.setUnderline(false);
 }
 
 MainWindow::~MainWindow()
@@ -60,6 +62,13 @@ void MainWindow::doClear()
 {
     ui->list_rolls->clear();
     ui->lbl_results->clear();
+    ui->lbl_d4->setFont(normal);
+    ui->lbl_d6->setFont(normal);
+    ui->lbl_d8->setFont(normal);
+    ui->lbl_d10->setFont(normal);
+    ui->lbl_d12->setFont(normal);
+    ui->lbl_d20->setFont(normal);
+    ui->lbl_d100->setFont(normal);
 }
 
 quint32 MainWindow::roll(int limit)
@@ -75,8 +84,20 @@ quint32 MainWindow::roll(int limit)
     return static_cast<quint32>(dice_roll);
 }
 
+void MainWindow::highlightSelection(int val)
+{
+    val == 4   ? ui->lbl_d4->setFont(selected)   : ui->lbl_d4->setFont(normal);
+    val == 6   ? ui->lbl_d6->setFont(selected)   : ui->lbl_d6->setFont(normal);
+    val == 8   ? ui->lbl_d8->setFont(selected)   : ui->lbl_d8->setFont(normal);
+    val == 10  ? ui->lbl_d10->setFont(selected)  : ui->lbl_d10->setFont(normal);
+    val == 12  ? ui->lbl_d12->setFont(selected)  : ui->lbl_d12->setFont(normal);
+    val == 20  ? ui->lbl_d20->setFont(selected)  : ui->lbl_d20->setFont(normal);
+    val == 100 ? ui->lbl_d100->setFont(selected) : ui->lbl_d100->setFont(normal);
+}
+
 void MainWindow::showResults(int limit)
 {
+    highlightSelection(limit);
     ui->list_rolls->clear();
     ui->lbl_results->setText("Rolling...");
     qApp->processEvents();
@@ -113,8 +134,7 @@ void MainWindow::showResults(int limit)
 
 void MainWindow::on_sb_numDice_valueChanged(int arg1)
 {
-    ui->list_rolls->clear();
-    ui->lbl_results->clear();
+    doClear();
 
     ui->lbl_d4->setText(QString("%1d4").arg(arg1));
     ui->lbl_d6->setText(QString("%1d6").arg(arg1));
@@ -156,5 +176,7 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionAbout_DiceRoller_triggered()
 {
-    QMessageBox::information(this,"DiceRoller","DiceRoller\nBuild w/Qt 5.12.2\nMichael Campbell\nMarch 2020\nhttps://github.com/FburgStokeFan");
+    QMessageBox::information(this,"DiceRoller",
+        "DiceRoller\nBuild w/Qt 5.12.2\nMichael Campbell\nMarch 2020\nhttps://github.com/FburgStokeFan");
 }
+
