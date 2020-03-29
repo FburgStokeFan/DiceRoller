@@ -18,6 +18,8 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     std::mt19937_64 generator;
+    QFont selected = QFont("Arial",14,QFont::Bold);
+    QFont normal   = QFont("Arial",10,QFont::Normal);
 
 private slots:
     void on_actionExit_triggered();
@@ -32,7 +34,6 @@ private slots:
     void on_rb_disadvantage_clicked();
     void on_rb_total_clicked();
     void on_sb_numDice_valueChanged(int arg1);
-
     void on_actionAbout_DiceRoller_triggered();
 
 private:
@@ -40,6 +41,7 @@ private:
     quint32 roll(int limit);
     void showResults(int limit);
     void doClear();
+    void highlightSelection(int val);
 };
 
 #endif // MAINWINDOW_H
